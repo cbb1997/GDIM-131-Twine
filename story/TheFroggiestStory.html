@@ -80,16 +80,23 @@ window.sendEvent = function(args = {})
     }
   	
   	var json_text = JSON.stringify(json_dict);
-    console.log(json_text);
-  
+    //console.log(json_text);
   	
   	var app_url = "https://script.google.com/macros/s/AKfycbxDWlfghgwyOzSz0z7ufAyvRaK3Z7IAP9JBeUAP1_ngZoJryFqh4zoJO1X5EPMj4NFm/exec"
-  	$.ajax({
-      url: app_url,
-      method:"POST",
-      dataType: "json",
-      data: json_text
-    }).done(function() {});
+  	
+    try
+    {
+    	$.ajax({
+        url: app_url,
+        method:"POST",
+        dataType: "json",
+        data: json_text
+      	}).done(function() {});
+    }
+    catch(error)
+    {
+    	console.warn('Potential error in post request: ' + error.message);
+    }
 }
 
 function initObserver()
