@@ -20,7 +20,14 @@ tw-story{
 
 window.passageEntered = function()
 {
-  	window.sendEvent({'passage_name': State.variables});
+  	var current_passage = State.passage;
+  	var last_passage = sessionStorage.getItem("last_passage");
+  
+  	if(last_passage != current_passage)
+    {
+      	sessionStorage.setItem("last_passage", current_passage);
+    	window.sendEvent({'passage_name': current_passage});
+    }
 }
 
 window.gameOver = function(ending_num)
@@ -97,7 +104,7 @@ Hopefully, tomorrow is a peaceful day.
 &#39;&#39;
 My froggy optics bulged out of my eye sockets as I read the news. Was it murder? Suicide? or something far more foul? No matter the case, my brethren was silenced and I could no longer sit idly by.
 
-I knew it was time — for Detective Froggy to join the fray.
+I knew it was time for Detective Froggy to join the fray.
 
 [[Next-&gt;PassageA]]
 
