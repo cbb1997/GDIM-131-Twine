@@ -13,9 +13,10 @@
 
 tw-story{
 	font-family: "Times New Roman", Times, serif;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">window.gameStart = function()
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">window.gameStart = async function()
 {
-	window.sendEvent();
+  	var location = await window.getLocation();
+	window.sendEvent(location);
 }
 
 window.passageEntered = function()
@@ -51,8 +52,18 @@ window.getTimestamp = function()
 	return new Date().toUTCString();
 }
 
-window.sendEvent = function(args = {})
+window.getLocation = async function()
 {
+  	var url = 'https://geolocation-db.com/json/';
+  	var key = '254a10e0-f2ec-11f0-ad26-2d88c02dc246';
+  	
+  	var response = await fetch(url + key);
+	var json = await response.json();
+	return json;
+}
+
+window.sendEvent = function(args = {})
+{  
   	var json_dict;
   	var base_vals = {
           "session_id": window.getSessionId(),
@@ -70,6 +81,12 @@ window.sendEvent = function(args = {})
   	
   	var json_text = JSON.stringify(json_dict);
     console.log(json_text);
+  
+  	fetch("", {
+		method: "POST",
+		body: json_text,
+		headers: {}
+    })
 }
 
 function initObserver()
