@@ -13,36 +13,103 @@
 
 tw-story{
 	font-family: "Times New Roman", Times, serif;
-}</style><script role="script" id="twine-user-script" type="text/twine-javascript">console.log('Hello world!')
-
-window.logPassageName = function()
+}</style><script role="script" id="twine-user-script" type="text/twine-javascript">window.gameStart = async function()
 {
-  	var harlowe_vars = State.variables;
-	console.log(harlowe_vars);
+  	var location = await window.getLocation();
+	window.sendEvent(location);
 }
 
-window.getJSessionId = function()
+window.passageEntered = function()
 {
-    var jsId = document.cookie.match(/JSESSIONID=[^;]+/);
-    if(jsId != null) {
-        if (jsId instanceof Array)
-            jsId = jsId[0].substring(11);
-        else
-            jsId = jsId.substring(11);
+  	var current_passage = State.passage;
+  	var last_passage = sessionStorage.getItem("last_passage");
+  
+  	if(last_passage != current_passage)
+    {
+      	sessionStorage.setItem("last_passage", current_passage);
+    	window.sendEvent({'passage_name': current_passage});
     }
-    return jsId;
 }
 
-console.log('session_id:' + window.getJSessionId());
+window.gameOver = function(ending_num)
+{
+	window.sendEvent({'ending': ending_num});
+}
 
-const passageContainer = document.querySelector('tw-story');
+window.getSessionId = function() 
+{
+    var id = sessionStorage.getItem("session_id");
+    if (!id) 
+    {
+      id = crypto.randomUUID();   
+      sessionStorage.setItem("session_id", id);
+    }
+    return id;
+}
 
-const observer = new MutationObserver(() => {
-    window.logPassageName();
-});
+window.getTimestamp = function()
+{
+	return new Date().toUTCString();
+}
 
-observer.observe(passageContainer, { childList: true, subtree: true });
-</script><tw-passagedata pid="1" name="Intro" tags="" position="350,175" size="100,100">The year is 1889, the Gilded Age. Robber barons control the flow of economy while the everyday citizens toil just to scrape by. 
+window.getLocation = async function()
+{
+  	var url = "https://geolocation-db.com/json/";
+  	var key = "254a10e0-f2ec-11f0-ad26-2d88c02dc246";
+  	
+  	var response = await fetch(url + key);
+	var json = await response.json();
+	return json;
+}
+
+window.sendEvent = function(args = {})
+{  
+  	var json_dict;
+  	var base_vals = {
+          "session_id": window.getSessionId(),
+          "timestamp": window.getTimestamp(),
+        };
+  
+  	if (args != {})
+    {   
+    	json_dict = {...base_vals, ...args};
+    }
+  	else
+    {
+    	json_dict = base_vals;
+    }
+  	
+  	var json_text = JSON.stringify(json_dict);
+    console.log(json_text);
+  
+  	
+  	var app_url = "https://script.google.com/macros/s/AKfycbxDWlfghgwyOzSz0z7ufAyvRaK3Z7IAP9JBeUAP1_ngZoJryFqh4zoJO1X5EPMj4NFm/exec"
+  	$.ajax({
+      url: app_url,
+      method:"POST",
+      dataType: "json",
+      data: json_text
+    }).done(function() {});
+}
+
+function initObserver()
+{
+	const passageContainer = document.querySelector('tw-story');
+
+	const observer = new MutationObserver(() => {
+    	window.passageEntered();
+	});
+
+	observer.observe(passageContainer, { childList: true, subtree: true });
+}
+
+function main()
+{
+  	window.gameStart();
+	initObserver();
+}
+
+main();</script><tw-passagedata pid="1" name="Intro" tags="" position="350,175" size="100,100">The year is 1889, the Gilded Age. Robber barons control the flow of economy while the everyday citizens toil just to scrape by. 
 
 [[Next-&gt;IntroCont]]
 </tw-passagedata><tw-passagedata pid="2" name="IntroCont" tags="" position="350,300" size="100,100">The once beautiful Ribbit Pond, known for its abundance of lilypads, has now been transformed into a factory site by the ruthless Tycoon Toad. Tycoon Toad is turning the lilypads into luxurious parasols for the rich, displacing hundreds of thousands of residents of Ribbit Pond. 
@@ -57,7 +124,7 @@ Hopefully, tomorrow is a peaceful day.
 &#39;&#39;
 My froggy optics bulged out of my eye sockets as I read the news. Was it murder? Suicide? or something far more foul? No matter the case, my brethren was silenced and I could no longer sit idly by.
 
-I knew it was time — for Detective Froggy to join the fray.
+I knew it was time for Detective Froggy to join the fray.
 
 [[Next-&gt;PassageA]]
 
