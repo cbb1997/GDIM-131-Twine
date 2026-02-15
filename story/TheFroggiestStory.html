@@ -54,8 +54,8 @@ window.getTimestamp = function()
 
 window.getLocation = async function()
 {
-  	var url = 'https://geolocation-db.com/json/';
-  	var key = '254a10e0-f2ec-11f0-ad26-2d88c02dc246';
+  	var url = "https://geolocation-db.com/json/";
+  	var key = "254a10e0-f2ec-11f0-ad26-2d88c02dc246";
   	
   	var response = await fetch(url + key);
 	var json = await response.json();
@@ -82,11 +82,14 @@ window.sendEvent = function(args = {})
   	var json_text = JSON.stringify(json_dict);
     console.log(json_text);
   
-  	fetch("", {
-		method: "POST",
-		body: json_text,
-		headers: {}
-    })
+  	
+  	var app_url = "https://script.google.com/macros/s/AKfycbz5dFi1CNfde1JLnvZNk9FIKVUsrmX6B8PaQfnCPjlu6VQIaJQ_b9lvEpmDB-rLejoz/exec"
+  	$.ajax({
+      url:app_url,
+      method:"POST",
+      dataType: "json",
+      data: json_text
+    }).done(function() {});
 }
 
 function initObserver()
