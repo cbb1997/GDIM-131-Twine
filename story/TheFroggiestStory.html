@@ -34,7 +34,8 @@ window.passageEntered = function()
 window.gameOver = function()
 {
   	var ending_clues = State.variables.clues;
-	window.sendEvent({'clues': ending_clues});
+  	var ending_trust = State.variables.trust;
+	window.sendEvent({'clues': ending_clues, 'trust': ending_trust});
 }
 
 window.getSessionId = function() 
@@ -144,16 +145,22 @@ I decide to...
 [[Praise Little Tadpole-&gt;PassageB.1]]
 [[Call him trash-&gt;PassageB.2]]
 
+(set: $trust to 0)
+
 (set: $checked_bed to false)
 (set: $checked_window to false)</tw-passagedata><tw-passagedata pid="6" name="PassageB.1" tags="" position="350,800" size="100,100">&quot;You&#39;ve been a good boy,&quot; I tell Little Tadpole.
 
 Little Tadpole is delighted.
 
-[[Next-&gt;PassageC]]</tw-passagedata><tw-passagedata pid="7" name="PassageB.2" tags="" position="475,800" size="100,100">&quot;Little Tadpole, it seems you&#39;ve been here for quite a while and yet, you&#39;ve still found nothing? Don&#39;t make me repeat myself. Git gud or go home.&quot;
+[[Next-&gt;PassageC]]
+
+(set: $trust to it +1)</tw-passagedata><tw-passagedata pid="7" name="PassageB.2" tags="" position="475,800" size="100,100">&quot;Little Tadpole, it seems you&#39;ve been here for quite a while and yet, you&#39;ve still found nothing? Don&#39;t make me repeat myself. Git gud or go home.&quot;
 
 Little Tadpole stands there dejected.
 
-[[Next-&gt;PassageC]]</tw-passagedata><tw-passagedata pid="8" name="PassageC" tags="" position="400,925" size="100,100">&quot;Anyways, let&#39;s get down to business,&quot; I enthusiastically announce. I scan the area with my fine froggy optics, analysing every molecule in the room for potential clues.
+[[Next-&gt;PassageC]]
+
+(set: $trust to it -1)</tw-passagedata><tw-passagedata pid="8" name="PassageC" tags="" position="400,925" size="100,100">&quot;Anyways, let&#39;s get down to business,&quot; I enthusiastically announce. I scan the area with my fine froggy optics, analysing every molecule in the room for potential clues.
 
 I decide to...
 
@@ -244,11 +251,15 @@ Now, I realize that I have to make a choice. The gas in my car is below the desi
 My honed froggy instincts tell me to...
 
 [[Investigate Tycoon Toad HQ-&gt;PassageL.1]]
-[[Investigate the Knights of Frogger meeting room-&gt;PassageL.2]]</tw-passagedata><tw-passagedata pid="23" name="PassageK.2" tags="" position="525,2050" size="100,100">Before Little Tadpole could hand the foolish envelope to me, I valiantly raise my arm. Then, in one fell swoop, I slap the envelope out of my hopeless sidekick&#39;s hand.
+[[Investigate the Knights of Frogger meeting room-&gt;PassageL.2]]
+
+(set: $trust to it +1)</tw-passagedata><tw-passagedata pid="23" name="PassageK.2" tags="" position="525,2050" size="100,100">Before Little Tadpole could hand the foolish envelope to me, I valiantly raise my arm. Then, in one fell swoop, I slap the envelope out of my hopeless sidekick&#39;s hand.
 
 &quot;Fret not, Little Tadpole. I already possess all the clues we will need.&quot;
 
-[[Head over to the Knights of Frogger&#39;s meeting room-&gt;PassageL.2]]</tw-passagedata><tw-passagedata pid="24" name="PassageL.1" tags="" position="400,2175" size="100,100">I pull up to Tycoon Toad HQ with Little Tadpole in my gorfmobile. One step into the building and my froggy nostrils are overwhelmed by the scent... yes, the stench of the guilty. 
+[[Head over to the Knights of Frogger&#39;s meeting room-&gt;PassageL.2]]
+
+(set: $trust to it -1)</tw-passagedata><tw-passagedata pid="24" name="PassageL.1" tags="" position="400,2175" size="100,100">I pull up to Tycoon Toad HQ with Little Tadpole in my gorfmobile. One step into the building and my froggy nostrils are overwhelmed by the scent... yes, the stench of the guilty. 
 
 I was onto something.
 
@@ -336,7 +347,7 @@ Noticing my intentions, all of Twisted Toad&#39;s goons raise their weapons. How
 
 [[Next-&gt;Ending2]]</tw-passagedata><tw-passagedata pid="38" name="PassageR.1.2" tags="" position="225,2925" size="100,100">There are times when a frog cannot back down from a fight. This is my moment.
 
-[[Next-&gt;Ending3]]</tw-passagedata><tw-passagedata pid="39" name="Ending2" tags="" position="75,3050" size="100,100">I tanked three hundred and ninety eight bullets. But alas, even the Great Detective Froggy must one day fall.
+[[Next-&gt;Ending3]]</tw-passagedata><tw-passagedata pid="39" name="Ending2" tags="" position="75,3150" size="100,100">I tanked three hundred and ninety eight bullets. But alas, even the Great Detective Froggy must one day fall.
 
 I did not make it to four hundred.
 
@@ -357,16 +368,20 @@ Tyrant Toad.
 [[Next]]</tw-passagedata><tw-passagedata pid="41" name="PassageP.2" tags="" position="550,2675" size="100,100">&quot;Detective Froggy. You are one of us. Together, we can overthrow the corrupt Knights of Frogger and make them pay for what they&#39;ve done... to your father,&quot; Tycoon Toad rasps as he inches closer. &quot;What do you say, Detective?&quot;
 
 (if: $clues &gt;= 4)[[[Reject Twisted Toad&#39;s ridiculous offer-&gt;PassageQ.2.1]]]
-(else: )[[[Team up with Twisted Toad-&gt;Ending4]]]</tw-passagedata><tw-passagedata pid="42" name="PassageQ.2.1" tags="" position="550,2800" size="100,100">&quot;Twisted Toad. Do you take this detective for a fool?&quot; I slowly extend my arm to point directly at the wrinkly toad. &quot;The man behind the murder of Frogence Slimy, has connections with the Knights of Frogger. They are no man of faith, as expressed by the symbols they carve into the walls of the Knights of Frogger meeting rooml. This is a man who commands a large number of lower-class citizens as their goons. This is evident in the scene of Frogence&#39;s murder. Finally, on this man&#39;s hitlist, which includes several Knights of Frogger leaders, was also the crossed out name and face of my father, Father Frog!&quot;
+(else: )[[[Team up with Twisted Toad-&gt;EndingQ.2.2]]]</tw-passagedata><tw-passagedata pid="42" name="PassageQ.2.1" tags="" position="550,2800" size="100,100">&quot;Twisted Toad. Do you take this detective for a fool?&quot; I slowly extend my arm to point directly at the wrinkly toad. &quot;The man behind the murder of Frogence Slimy, has connections with the Knights of Frogger. They are no man of faith, as expressed by the symbols they carve into the walls of the Knights of Frogger meeting rooml. This is a man who commands a large number of lower-class citizens as their goons. This is evident in the scene of Frogence&#39;s murder. Finally, on this man&#39;s hitlist, which includes several Knights of Frogger leaders, was also the crossed out name and face of my father, Father Frog!&quot;
 
 I step forward and grab Twisted Toad by the collar. &quot;The man that is plotting to kill the Knights of Froggers and the man who killed my father, are the same! You are not fooling anyone, Twisted Toad.&quot; 
 
-[[Next-&gt;PassageR.2.1]]</tw-passagedata><tw-passagedata pid="43" name="Ending4" tags="" position="675,2800" size="100,100">I could not believe it. To think the Knights of Frogger were behind my father&#39;s murder. I will not forgive them. They pretended to be my father&#39;s allies, they pretended to grieve with me, they were all traitors. 
+[[Next-&gt;PassageR.2.1]]</tw-passagedata><tw-passagedata pid="43" name="Ending4" tags="" position="850,2925" size="100,100">I slowly remove my detective cap and toss it aside, for I no longer have any use for it. I turn around to see Little Tadpole shaking in disbelief. He opens his mouth, perhaps in a futile attempt to win me back. 
 
-I extend my arm out to shake Twisted Toad&#39;s hand. Perhaps this decision isn&#39;t the wisest. But I don&#39;t care. I have no reason to think anymore. All I need to do is make the Knights of Frogger pay.
+Foolish. 
+
+I reach for my concealed carry. 
+
+&quot;Little Tadpole. You are trash.&quot;
 
 
-&#39;&#39;Ending 3&#39;&#39;
+&#39;&#39;Ending 4&#39;&#39;
 
 [[Next]]</tw-passagedata><tw-passagedata pid="44" name="PassageR.2.1" tags="" position="550,2925" size="100,100">&quot;Hmph. I was gonna use you as my scapegoat after I finished the deed. But no matter.&quot; Twisted Toad bats my arm away and performs a cartwheel to gain space. &quot;Now, we will simply silence you.&quot; Twisted Toad&#39;s men all point their barrels at me.
 
@@ -388,6 +403,24 @@ Perhaps in the near future, a powerful frog with a big stick will appear to defe
 &lt;script&gt; 
 window.gameOver();
 &lt;/script&gt;
+</tw-passagedata><tw-passagedata pid="47" name="EndingQ.2.2" tags="" position="725,2800" size="100,100">I could not believe it. To think the Knights of Frogger were behind my father&#39;s murder. I will not forgive them. They pretended to be my father&#39;s allies, they pretended to grieve with me, they were all traitors. 
+
+I extend my arm out to shake Twisted Toad&#39;s hand. Perhaps this decision isn&#39;t the wisest. But I don&#39;t care. I have no reason to think anymore. All I need to do is make the Knights of Frogger pay.
+
+(if: $trust &gt;= 0)[[[Next-&gt;PassageR.2.2.1]]]
+(else: )[[[Shake Twisted Toad&#39;s hand-&gt;Ending4]]]</tw-passagedata><tw-passagedata pid="48" name="PassageR.2.2.1" tags="" position="725,2925" size="100,100">Right as I am about make that fated handshake with Twisted Toad, a scrawny runt slaps the wrinkly hand away with subpar technique. 
+
+&quot;No! Detective Froggy! You can&#39;t team up with him! Think about all the time we&#39;ve worked together, side by side! You can&#39;t give up being a detective now!&quot; To my bewilderment, Little Tadpole stands in between me and Twisted Toad. 
+
+Memories of my detective work begin to rush back to me. Memories of my time with my unreliable, yet occasionally helpful sidekick too. This time, he is right.
+
+[[Confront Twisted Toad with Little Tadpole-&gt;PassageS.2.1]]</tw-passagedata><tw-passagedata pid="49" name="PassageS.2.1" tags="" position="725,3050" size="100,100">&quot;Scram, pest. Our esteemed Detective Froggy does not need trash like you around,&quot; Twisted Toad warns Little Tadpole, clearly annoyed by the delay he has caused.
+
+&quot;Twisted Toad... it seems like you&#39;ve made one grave mistake.&quot; I lift my concealed carry. &quot;The only one who can call Little Tadpole trash... is me.&quot; 
+
+With a boom and blinding light, my concealed bazooka reduces Twisted Toad to ash.
+
+[[Next-&gt;Ending5]]
 </tw-passagedata></tw-storydata>
 <script title="Twine engine code" data-main="harlowe">(function(){"use strict";
 var require,define;!function(){var e={},r={};require=function(i){var n=e[i];return n&&(r[i]=n[1].apply(void 0,n[0].map(require)),e[i]=void 0),r[i]},(define=function(r,i,n){if("function"==typeof r)return r();e[r]=[i,n]}).amd=!0}();/*!
