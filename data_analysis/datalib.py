@@ -60,7 +60,7 @@ class DataHandler:
             try:
                 item = e(item)
             except ValueError:
-                pass
+                continue
             else:
                 break
 
@@ -92,16 +92,16 @@ class DataHandler:
     def setup_dirs(self):
         parent = self._csv_path.parent
         self._plots_path = parent / Path('plots')
-        self._meta_path = parent / Path('metadata/log.txt')
+        self._meta_path = parent / Path('metadata')
 
         if not self._plots_path.is_dir():
             os.mkdir(self._plots_path)
 
-        if not self._meta_path.parent.is_dir():
+        if not self._meta_path.is_dir():
             os.mkdir(self._meta_path)
 
         if not self._meta_path.is_file():
-            with open(self._meta_path, 'w') as f:
+            with open(self._meta_path / 'log.txt', 'w') as f:
                 f.write('')
             
 
